@@ -105,6 +105,10 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ['events'],
       }),
+      eventsDestroy: build.mutation<EventsDestroyApiResponse, EventsDestroyApiArg>({
+        query: (queryArg) => ({ url: `/api/events/${queryArg.id}/`, method: 'DELETE' }),
+        invalidatesTags: ['events'],
+      }),
     }),
     overrideExisting: false,
   });
@@ -164,6 +168,11 @@ export type EventsPartialUpdateApiArg = {
   /** A unique integer value identifying this events. */
   id: number;
   patchedEventRequest: PatchedEventRequest;
+};
+export type EventsDestroyApiResponse = unknown;
+export type EventsDestroyApiArg = {
+  /** A unique integer value identifying this events. */
+  id: number;
 };
 export type JwtAuthResponse = {
   access: string;
@@ -289,4 +298,5 @@ export const {
   useEventsRetrieveQuery,
   useEventsUpdateMutation,
   useEventsPartialUpdateMutation,
+  useEventsDestroyMutation,
 } = injectedRtkApi;

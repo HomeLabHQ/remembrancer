@@ -12,6 +12,7 @@ class EventsViewSet(
     mixins.CreateModelMixin,
     mixins.UpdateModelMixin,
     mixins.RetrieveModelMixin,
+    mixins.DestroyModelMixin,
     ListSerializerMixin,
     viewsets.GenericViewSet,
 ):

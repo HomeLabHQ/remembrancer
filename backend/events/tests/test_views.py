@@ -14,7 +14,7 @@ class EventVewSetTest(CRUDTestCase, TestCase):
     base_view = "events:events"
     queryset = Event.objects.all()
     item_count = 100
-    methods: typing.ClassVar = ["list", "retrieve", "create", "update", "partial_update"]
+    methods: typing.ClassVar = ["list", "retrieve", "create", "update", "partial_update", "destroy"]
 
     def setUp(self) -> None:
         self.user: User = self.create_and_login()

@@ -2,6 +2,7 @@ import {
   Button,
   Card,
   ColorPicker,
+  DEFAULT_THEME,
   Grid,
   Group,
   Stack,
@@ -12,17 +13,15 @@ import {
 import { useForm } from '@mantine/form';
 import { useNavigate } from 'react-router-dom';
 import { DateInput } from '@mantine/dates';
-import dayjs from 'dayjs';
 import {
   EventRead,
   EventRequest,
-  EventsRetrieveApiResponse,
-  PatchedEventRequest,
   useEventsCreateMutation,
   useEventsPartialUpdateMutation,
 } from '@/redux/api';
 import formatDate from '@/hooks/formatDate';
 import { defaultColor } from '@/settings/constants';
+
 interface EventFormData extends Omit<EventRequest, 'date'> {
   date: Date;
 }
@@ -85,7 +84,15 @@ export default function EventForm(props: Readonly<{ event?: EventRead }>) {
               />
               <Stack>
                 Event label color
-                <ColorPicker {...form.getInputProps('color')} />
+                <ColorPicker
+                  withPicker={false}
+                  swatches={[
+                    ...DEFAULT_THEME.colors.red.slice(0, 7),
+                    ...DEFAULT_THEME.colors.green.slice(0, 7),
+                    ...DEFAULT_THEME.colors.blue.slice(0, 7),
+                  ]}
+                  {...form.getInputProps('color')}
+                />
               </Stack>
             </Group>
             <Group>
