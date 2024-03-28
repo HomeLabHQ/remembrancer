@@ -11,7 +11,7 @@
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
 <div align="center">
-  <h3 align="center">Checklist manager</h3>
+  <h3 align="center">Remembrancer</h3>
 </div>
 
 <details>

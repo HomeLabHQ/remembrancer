@@ -130,12 +130,15 @@ class CRUDTestCase(BaseTestCase):
     def test_list(self) -> None:
         if "list" not in self.methods:
             raise SkipTest("list method not implemented")
-        self.client.get(reverse(f"{self.base_view}-list"))
+        resp = self.client.get(reverse(f"{self.base_view}-list"))
+        self.assertEqual(resp.status_code, 200)
 
     def test_create(self) -> None:
         if "create" not in self.methods:
             raise SkipTest("create method not implemented")
-        json_response = self.client.post(reverse(f"{self.base_view}-list"), data=self.fake_data).json()
+        resp = self.client.post(reverse(f"{self.base_view}-list"), data=self.fake_data)
+        json_response = resp.json()
+        self.assertEqual(resp.status_code, 201)
         self.assertEqual(self.queryset.filter(pk=json_response.get("id")).count(), 1)
 
     def test_create_not_allowed(self) -> None:
