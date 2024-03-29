@@ -28,8 +28,8 @@ services:
       context: ./
       args:
         - API_URL
-    env_file:
-      - .env
+    ports:
+      - "${SERVICE_PORT}:80"
     volumes:
       - static:/static
       - attachments:/attachments
