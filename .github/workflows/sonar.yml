@@ -26,7 +26,7 @@ jobs:
         run: poetry -C backend install --with test
       - name: Test for coverage
         run: poetry -C backend run coverage run --rcfile=./backend/pyproject.toml backend/manage.py test backend &&
-          poetry -C backend run coverage --rcfile=./backend/pyproject.toml xml
+          poetry -C backend run coverage xml --rcfile=./backend/pyproject.toml
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
