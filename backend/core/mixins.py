@@ -35,15 +35,14 @@ class ChoiceMixin:
     all_choices = None
 
     @extend_schema(
-        summary="Get choices for item",
-        description="Get ENUM choices for item",
+        summary="Get choices for object",
+        description="Get ENUM choices for object",
         responses={200: OpenApiResponse(response=serializers.ListSerializer(child=ChoiceSerializer()))},
     )
     @action(detail=False, methods=["GET"], pagination_class=None)
     def choices(self, request, *args, **kwargs):
         """Use this mixin if you have some choices that need to be send to frontend
-        this action will import dynamic all choices user send in type query
-        and return its choices
+        this action will import dynamic all choices user send
         """
         data = [{"field": v[0], "values": [item.name for item in v[1]]} for v in self.all_choices.items()]
         return Response(data=data, status=200)

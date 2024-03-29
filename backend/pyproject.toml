@@ -90,7 +90,7 @@ omit = [
   "*/settings.py",
   "*/asgi.py",
   "*/wsgi.py",
-  "*/tests.py",
+  "tests.py",
 ]
 
 [tool.coverage.report]

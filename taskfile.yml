@@ -48,8 +48,8 @@ tasks:
       - cd frontend && yarn run api
   coverage:
     cmds:
-      - poetry -C backend run coverage run backend/manage.py test backend
-      - poetry -C backend run coverage report -m
+      - poetry -C backend run coverage  run --rcfile=./backend/pyproject.toml backend/manage.py test backend 
+      - poetry -C backend run coverage report -m  --rcfile=./backend/pyproject.toml
     silent: true
   erd:
     cmds:
