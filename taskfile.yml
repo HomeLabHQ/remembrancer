@@ -3,9 +3,6 @@ tasks:
   env.development:
     cmds:
       - infisical export  -e development >.env
-  env.staging:
-    cmds:
-      - infisical export  -e staging >.env
   env.production:
     cmds:
       - infisical export  -e production >.env

@@ -1,22 +1,26 @@
 version: "3.8"
-networks:
-  default:
-  reverse-proxy:
-    external: true
+x-service: &service
+  build:
+    dockerfile: ./docker/backend/Dockerfile
+    context: ./
+  env_file:
+    - .env
+  image: remembrancer/backend-${ENVIRONMENT}
 services:
   api:
+    <<: *service
     container_name: remembrancer-api-${ENVIRONMENT}
-    build:
-      dockerfile: ./docker/backend/Dockerfile
-      context: ./
-    env_file:
-      - .env
-    networks:
-      - reverse-proxy
+    command:
+      - prod
     volumes:
       - static:/code/static
       - attachments:/code/attachments
     image: remembrancer/backend-${ENVIRONMENT}
+  celery:
+    <<: *service
+    depends_on:
+      - redis
+    command: celery worker -l INFO -Q django
   nginx:
     container_name: remembrancer-nginx-${ENVIRONMENT}
     build:
@@ -24,7 +28,6 @@ services:
       context: ./
       args:
         - API_URL
-    restart: always
     env_file:
       - .env
     volumes:
@@ -35,8 +38,6 @@ services:
       - api
   redis:
     image: redis:latest
-    ports:
-      - "6379:6379"
     volumes:
       - redis_data:/data
 volumes:
