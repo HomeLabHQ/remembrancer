@@ -133,7 +133,7 @@ class CRUDTestCase(BaseTestCase):
         self.assertEqual(resp.status_code, 200)
 
     def test_list_not_allowed(self) -> None:
-        if "list" not in self.methods:
+        if "list" in self.methods:
             raise SkipTest("list method not implemented")
         resp = self.client.get(reverse(f"{self.base_view}-list"))
         self.assertEqual(resp.status_code, 405)
