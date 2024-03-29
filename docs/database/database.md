@@ -1,7 +1,6 @@
 ```dot
 digraph model_graph {
   // Dotfile by Django-Extensions graph_models
-  // Created: 2024-03-27 22:00
   // Cli Options: -a -g -o docs/database/database.dot
 
   fontname = "Roboto"
@@ -820,32 +819,6 @@ digraph model_graph {
     color=olivedrab4
     style="rounded"
   
-    core_models_TitleDescriptionModel [label=<
-      <TABLE BGCOLOR="white" BORDER="1" CELLBORDER="0" CELLSPACING="0">
-      <TR><TD COLSPAN="2" CELLPADDING="5" ALIGN="CENTER" BGCOLOR="#1b563f">
-      <FONT FACE="Roboto" COLOR="white" POINT-SIZE="10"><B>
-      TitleDescriptionModel<BR/>&lt;<FONT FACE="Roboto"><I>TitleModel,DescriptionModel</I></FONT>&gt;
-      </B></FONT></TD></TR>
-    
-    
-      <TR><TD ALIGN="LEFT" BORDER="0">
-      <FONT COLOR="#7B7B7B" FACE="Roboto"><I>description</I></FONT>
-      </TD><TD ALIGN="LEFT">
-      <FONT COLOR="#7B7B7B" FACE="Roboto"><I>TextField</I></FONT>
-      </TD></TR>
-    
-    
-    
-      <TR><TD ALIGN="LEFT" BORDER="0">
-      <FONT FACE="Roboto"><I>title</I></FONT>
-      </TD><TD ALIGN="LEFT">
-      <FONT FACE="Roboto"><I>CharField</I></FONT>
-      </TD></TR>
-    
-    
-      </TABLE>
-      >]
-  
     core_models_TimeStampedModel [label=<
       <TABLE BGCOLOR="white" BORDER="1" CELLBORDER="0" CELLSPACING="0">
       <TR><TD COLSPAN="2" CELLPADDING="5" ALIGN="CENTER" BGCOLOR="#1b563f">
@@ -866,6 +839,32 @@ digraph model_graph {
       <FONT COLOR="#7B7B7B" FACE="Roboto">updated_at</FONT>
       </TD><TD ALIGN="LEFT">
       <FONT COLOR="#7B7B7B" FACE="Roboto">DateTimeField</FONT>
+      </TD></TR>
+    
+    
+      </TABLE>
+      >]
+  
+    core_models_TitleDescriptionModel [label=<
+      <TABLE BGCOLOR="white" BORDER="1" CELLBORDER="0" CELLSPACING="0">
+      <TR><TD COLSPAN="2" CELLPADDING="5" ALIGN="CENTER" BGCOLOR="#1b563f">
+      <FONT FACE="Roboto" COLOR="white" POINT-SIZE="10"><B>
+      TitleDescriptionModel<BR/>&lt;<FONT FACE="Roboto"><I>TitleModel,DescriptionModel</I></FONT>&gt;
+      </B></FONT></TD></TR>
+    
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT COLOR="#7B7B7B" FACE="Roboto"><I>description</I></FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT COLOR="#7B7B7B" FACE="Roboto"><I>TextField</I></FONT>
+      </TD></TR>
+    
+    
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Roboto"><I>title</I></FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Roboto"><I>CharField</I></FONT>
       </TD></TR>
     
     
