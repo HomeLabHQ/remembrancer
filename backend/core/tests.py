@@ -69,8 +69,6 @@ class BaseTestCase(ABC):
         super()._callTestMethod(method)
 
 
-# TODO: Add public_methods for cases where specific views are available without auth
-#  And check if get without auth will return 401
 class CRUDTestCase(BaseTestCase):
     """CRUDTestCase
 
@@ -105,6 +103,7 @@ class CRUDTestCase(BaseTestCase):
     queryset = None
     fake_data: typing.ClassVar = {}
     methods: typing.ClassVar = []
+    public_methods: typing.ClassVar = []
 
     def create_and_login(self, email="test@mail.com", password="qwerty123456", first_name="John", last_name="Snow"):
         user: User = self.create(email=email, password=password, first_name=first_name, last_name=last_name)
@@ -133,6 +132,23 @@ class CRUDTestCase(BaseTestCase):
         resp = self.client.get(reverse(f"{self.base_view}-list"))
         self.assertEqual(resp.status_code, 200)
 
+    def test_list_not_allowed(self) -> None:
+        if "list" in self.methods:
+            raise SkipTest("list method not implemented")
+        resp = self.client.get(reverse(f"{self.base_view}-list"))
+        self.assertEqual(resp.status_code, 405)
+
+    def test_list_public(self) -> None:
+        self.client.logout()
+        if "list" not in self.methods:
+            raise SkipTest("list method not implemented")
+        if "list" in self.methods and "list" in self.public_methods:
+            resp = self.client.get(reverse(f"{self.base_view}-list"))
+            self.assertEqual(resp.status_code, 200)
+        if "list" in self.methods and "list" not in self.public_methods:
+            resp = self.client.get(reverse(f"{self.base_view}-list"))
+            self.assertEqual(resp.status_code, 401)
+
     def test_create(self) -> None:
         if "create" not in self.methods:
             raise SkipTest("create method not implemented")
@@ -140,6 +156,17 @@ class CRUDTestCase(BaseTestCase):
         json_response = resp.json()
         self.assertEqual(resp.status_code, 201)
         self.assertEqual(self.queryset.filter(pk=json_response.get("id")).count(), 1)
+
+    def test_create_public(self) -> None:
+        self.client.logout()
+        if "create" not in self.methods:
+            raise SkipTest("list method not implemented")
+        if "create" in self.methods and "create" in self.public_methods:
+            resp = self.client.get(reverse(f"{self.base_view}-list"))
+            self.assertEqual(resp.status_code, 201)
+        if "create" in self.methods and "create" not in self.public_methods:
+            resp = self.client.get(reverse(f"{self.base_view}-list"))
+            self.assertEqual(resp.status_code, 401)
 
     def test_create_not_allowed(self) -> None:
         if "create" in self.methods:
@@ -162,6 +189,19 @@ class CRUDTestCase(BaseTestCase):
         test_instance = self.queryset.first()
         resp = self.client.get(reverse(f"{self.base_view}-detail", args=(test_instance.id,)))
         self.assertEqual(resp.status_code, 405)
+
+    def test_retrieve_public(self) -> None:
+        self.client.logout()
+        if "retrieve" not in self.methods:
+            raise SkipTest("list method not implemented")
+        if "retrieve" in self.methods and "retrieve" in self.public_methods:
+            test_instance = self.queryset.first()
+            resp = self.client.get(reverse(f"{self.base_view}-detail", args=(test_instance.id,)))
+            self.assertEqual(resp.status_code, 200)
+        if "retrieve" in self.methods and "retrieve" not in self.public_methods:
+            test_instance = self.queryset.first()
+            resp = self.client.get(reverse(f"{self.base_view}-detail", args=(test_instance.id,)))
+            self.assertEqual(resp.status_code, 401)
 
     def test_update(self) -> None:
         if "update" not in self.methods:

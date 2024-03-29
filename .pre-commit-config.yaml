@@ -7,13 +7,6 @@ repos:
       - id: check-merge-conflict
       - id: check-shebang-scripts-are-executable
       - id: trailing-whitespace
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.2.1
-    hooks:
-      - id: ruff
-        args:
-          [--fix, --exit-non-zero-on-fix, --config, ./backend/pyproject.toml]
-      - id: ruff-format
   - repo: local
     hooks:
       - id: api-schema
@@ -24,5 +17,15 @@ repos:
       - id: migration-check
         name: check for missing migrations
         entry: poetry run --directory backend  ./backend/manage.py makemigrations
+        language: system
+        pass_filenames: false
+      - id: lint
+        name: lint BE + FE
+        entry: task lint
+        language: system
+        pass_filenames: false
+      - id: erd
+        name: erd
+        entry: task erd
         language: system
         pass_filenames: false

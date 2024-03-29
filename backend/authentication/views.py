@@ -1,5 +1,7 @@
 from django.conf import settings
+from django.utils.decorators import method_decorator
 from django.utils.http import urlsafe_base64_decode
+from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import OpenApiResponse, extend_schema, extend_schema_view
 from rest_framework import permissions
 from rest_framework.exceptions import force_str
@@ -88,6 +90,7 @@ class SocialLoginsView(GenericAPIView):
     permission_classes = (AllowAny,)
     serializer_class = SocialLoginSerializer
 
+    @method_decorator(cache_page(60 * 60 * 24 * 365))
     def get(self, request) -> Response:
         li = LinkedinOpenIdConnect(redirect_uri=f"{settings.SITE_URL}/social/linkedin-openidconnect/")
         google = GoogleOAuth2(redirect_uri=f"{settings.SITE_URL}/social/google-oauth2/")

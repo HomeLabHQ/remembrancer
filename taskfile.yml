@@ -48,14 +48,16 @@ tasks:
       - cd frontend && yarn run api
   coverage:
     cmds:
-      - poetry -C backend run coverage run backend/manage.py test backend
-      - poetry -C backend run coverage report -m
+      - poetry -C backend run coverage  run --rcfile=./backend/pyproject.toml backend/manage.py test backend 
+      - poetry -C backend run coverage report -m  --rcfile=./backend/pyproject.toml
     silent: true
   erd:
     cmds:
       - poetry -C backend run ./backend/manage.py graph_models -a  -g  -o docs/database/database.dot
       - mv docs/database/database.dot docs/database/database.md
       - sed -i '' '1s/^/```dot\n/' docs/database/database.md && echo '```' >> docs/database/database.md
+      - "sed -i '' '/^ *.. Created: .*/d' docs/database/database.md"
+
     silent: true
   lint:
     cmds:

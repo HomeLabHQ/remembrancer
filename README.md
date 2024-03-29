@@ -10,9 +10,11 @@
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=HomeLabHQ_remembrancer&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=HomeLabHQ_remembrancer)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
-<div align="center">
-  <h3 align="center">Remembrancer</h3>
-</div>
+# Remembrancer
+
+## Project description <a href="https://homelabhq.github.io/remembrancer/"><img src="https://img.shields.io/badge/doc-mkdocs-02a6f2?style=flat-square&logo=read-the-docs" alt="Documentation"></a>
+
+Main goal of this project is to track specified events and time to them. This project allows users to effortlessly save important event dates and access them later with ease. Users can input various event details such as descriptions, dates, and any additional notes.
 
 <details>
   <summary>Table of Contents</summary>
@@ -21,7 +23,6 @@
       <a href="#about-the-project">About The Project</a>
       <ul>
         <li><a href="#built-with">Built With</a></li>
-        <li><a href="#db-schema">DB Schema</a></li>
       </ul>
     </li>
     <li>
@@ -31,9 +32,6 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
   </ol>
 </details>
 
