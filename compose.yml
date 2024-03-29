@@ -1,7 +1,6 @@
 version: "3.8"
 
 x-service: &service
-  restart: always
   build:
     dockerfile: ./docker/backend/Dockerfile
     context: ./
@@ -56,8 +55,6 @@ services:
       - api
   redis:
     image: redis:latest
-    ports:
-      - "6379:6379"
     volumes:
       - redis_data:/data
 volumes:
