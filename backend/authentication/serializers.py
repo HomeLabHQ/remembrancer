@@ -1,3 +1,4 @@
+from core.serializers import ImageUploadSerializer, ModelFileSerializer
 from core.tasks import send_email
 from core.tokens import TokenGenerator
 from core.utils import create_url
@@ -81,7 +82,7 @@ class SignUpSerializer(serializers.ModelSerializer):
         return data
 
 
-class UserSerializer(serializers.ModelSerializer):
+class BaseUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
@@ -89,6 +90,18 @@ class UserSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
         )
+
+
+class UserSerializer(ModelFileSerializer):
+    avatar = ImageUploadSerializer(required=False, allow_null=True)
+
+    class Meta(BaseUserSerializer.Meta):
+        fields = (*BaseUserSerializer.Meta.fields, "avatar", "is_notifications_enabled")
+
+    def validate_avatar(self, avatar) -> str:
+        if avatar:
+            return avatar["name"]
+        return avatar
 
 
 class SignUpConfirmSerializer(serializers.Serializer):

@@ -1,5 +1,5 @@
 import { baseApi as api } from './baseApi';
-export const addTagTypes = ['auth', 'events'] as const;
+export const addTagTypes = ['auth', 'events', 'image-upload'] as const;
 const injectedRtkApi = api
   .enhanceEndpoints({
     addTagTypes,
@@ -17,6 +17,17 @@ const injectedRtkApi = api
       authProfileRetrieve: build.query<AuthProfileRetrieveApiResponse, AuthProfileRetrieveApiArg>({
         query: () => ({ url: `/api/auth/profile/` }),
         providesTags: ['auth'],
+      }),
+      authProfilePartialUpdate: build.mutation<
+        AuthProfilePartialUpdateApiResponse,
+        AuthProfilePartialUpdateApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/api/auth/profile/`,
+          method: 'PATCH',
+          body: queryArg.patchedUserRequest,
+        }),
+        invalidatesTags: ['auth'],
       }),
       authRefreshCreate: build.mutation<AuthRefreshCreateApiResponse, AuthRefreshCreateApiArg>({
         query: (queryArg) => ({
@@ -109,6 +120,10 @@ const injectedRtkApi = api
         query: (queryArg) => ({ url: `/api/events/${queryArg.id}/`, method: 'DELETE' }),
         invalidatesTags: ['events'],
       }),
+      imageUploadCreate: build.mutation<ImageUploadCreateApiResponse, ImageUploadCreateApiArg>({
+        query: (queryArg) => ({ url: `/api/image-upload/`, method: 'POST', body: queryArg.body }),
+        invalidatesTags: ['image-upload'],
+      }),
     }),
     overrideExisting: false,
   });
@@ -117,8 +132,12 @@ export type AuthCreateApiResponse = /** status 200  */ JwtAuthResponse;
 export type AuthCreateApiArg = {
   customTokenObtainPairRequest: CustomTokenObtainPairRequestWrite;
 };
-export type AuthProfileRetrieveApiResponse = /** status 200  */ User;
+export type AuthProfileRetrieveApiResponse = /** status 200  */ UserRead;
 export type AuthProfileRetrieveApiArg = void;
+export type AuthProfilePartialUpdateApiResponse = /** status 200  */ UserRead;
+export type AuthProfilePartialUpdateApiArg = {
+  patchedUserRequest: PatchedUserRequest;
+};
 export type AuthRefreshCreateApiResponse = /** status 200  */ TokenRefreshRead;
 export type AuthRefreshCreateApiArg = {
   tokenRefreshRequest: TokenRefreshRequestWrite;
@@ -174,6 +193,10 @@ export type EventsDestroyApiArg = {
   /** A unique integer value identifying this events. */
   id: number;
 };
+export type ImageUploadCreateApiResponse = /** status 200  */ ImageUploadRead;
+export type ImageUploadCreateApiArg = {
+  body: Blob;
+};
 export type JwtAuthResponse = {
   access: string;
   refresh: string;
@@ -183,10 +206,36 @@ export type CustomTokenObtainPairRequestWrite = {
   email: string;
   password: string;
 };
+export type ImageUpload = {
+  name: string;
+};
+export type ImageUploadRead = {
+  name: string;
+  url: string;
+};
 export type User = {
   email: string;
   first_name: string;
   last_name: string;
+  avatar?: ImageUpload | null;
+  is_notifications_enabled?: boolean;
+};
+export type UserRead = {
+  email: string;
+  first_name: string;
+  last_name: string;
+  avatar?: ImageUploadRead | null;
+  is_notifications_enabled?: boolean;
+};
+export type ImageUploadRequest = {
+  name: string;
+};
+export type PatchedUserRequest = {
+  email?: string;
+  first_name?: string;
+  last_name?: string;
+  avatar?: ImageUploadRequest | null;
+  is_notifications_enabled?: boolean;
 };
 export type TokenRefresh = {};
 export type TokenRefreshRead = {
@@ -234,13 +283,18 @@ export type BaseEvent = {
   is_public?: boolean;
   date: string;
 };
+export type BaseUser = {
+  email: string;
+  first_name: string;
+  last_name: string;
+};
 export type BaseEventRead = {
   id: number;
   title: string;
   color?: string;
   is_public?: boolean;
   date: string;
-  author: User;
+  author: BaseUser;
 };
 export type PaginatedBaseEventList = {
   count: number;
@@ -267,7 +321,7 @@ export type EventRead = {
   color?: string;
   is_public?: boolean;
   date: string;
-  author: User;
+  author: BaseUser;
   description?: string;
 };
 export type EventRequest = {
@@ -287,6 +341,7 @@ export type PatchedEventRequest = {
 export const {
   useAuthCreateMutation,
   useAuthProfileRetrieveQuery,
+  useAuthProfilePartialUpdateMutation,
   useAuthRefreshCreateMutation,
   useAuthRegisterCreateMutation,
   useAuthRegisterConfirmCreateMutation,
@@ -299,4 +354,5 @@ export const {
   useEventsUpdateMutation,
   useEventsPartialUpdateMutation,
   useEventsDestroyMutation,
+  useImageUploadCreateMutation,
 } = injectedRtkApi;

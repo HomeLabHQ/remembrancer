@@ -45,6 +45,30 @@ paths:
               schema:
                 $ref: '#/components/schemas/User'
           description: ''
+    patch:
+      operationId: auth_profile_partial_update
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
   /api/auth/refresh/:
     post:
       operationId: auth_refresh_create
@@ -365,6 +389,31 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/image-upload/:
+    post:
+      operationId: image_upload_create
+      description: |-
+        Upload image to server
+
+        Upload image into S3 bucket, returning its `name` and `url`.
+        You need to specify `Content-Type` header to `image/*` value, i. e. `image/jpeg`.
+      tags:
+      - image-upload
+      requestBody:
+        content:
+          content:
+            schema:
+              format: binary
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageUpload'
+          description: ''
 components:
   schemas:
     BaseEvent:
@@ -386,13 +435,52 @@ components:
           format: date
         author:
           allOf:
-          - $ref: '#/components/schemas/User'
+          - $ref: '#/components/schemas/BaseUser'
           readOnly: true
       required:
       - author
       - date
       - id
       - title
+    BaseUser:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 255
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+      required:
+      - email
+      - first_name
+      - last_name
+    BaseUserRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          minLength: 1
+          title: Email address
+          maxLength: 255
+        first_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        last_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+      required:
+      - email
+      - first_name
+      - last_name
     CustomTokenObtainPairRequest:
       type: object
       properties:
@@ -426,7 +514,7 @@ components:
           format: date
         author:
           allOf:
-          - $ref: '#/components/schemas/User'
+          - $ref: '#/components/schemas/BaseUser'
           readOnly: true
         description:
           type: string
@@ -456,6 +544,26 @@ components:
       required:
       - date
       - title
+    ImageUpload:
+      type: object
+      properties:
+        name:
+          type: string
+        url:
+          type: string
+          format: uri
+          readOnly: true
+      required:
+      - name
+      - url
+    ImageUploadRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+      required:
+      - name
     JWTAuthResponse:
       type: object
       properties:
@@ -533,6 +641,32 @@ components:
           format: date
         description:
           type: string
+    PatchedUserRequest:
+      type: object
+      description: |-
+        Parent serializer for ones that have models with File fields.
+        This serializer will return ``None`` if the field is empty.
+      properties:
+        email:
+          type: string
+          format: email
+          minLength: 1
+          title: Email address
+          maxLength: 255
+        first_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        last_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        avatar:
+          allOf:
+          - $ref: '#/components/schemas/ImageUploadRequest'
+          nullable: true
+        is_notifications_enabled:
+          type: boolean
     SignUpConfirmRequest:
       type: object
       properties:
@@ -605,6 +739,9 @@ components:
       - token
     User:
       type: object
+      description: |-
+        Parent serializer for ones that have models with File fields.
+        This serializer will return ``None`` if the field is empty.
       properties:
         email:
           type: string
@@ -617,27 +754,12 @@ components:
         last_name:
           type: string
           maxLength: 150
-      required:
-      - email
-      - first_name
-      - last_name
-    UserRequest:
-      type: object
-      properties:
-        email:
-          type: string
-          format: email
-          minLength: 1
-          title: Email address
-          maxLength: 255
-        first_name:
-          type: string
-          minLength: 1
-          maxLength: 150
-        last_name:
-          type: string
-          minLength: 1
-          maxLength: 150
+        avatar:
+          allOf:
+          - $ref: '#/components/schemas/ImageUpload'
+          nullable: true
+        is_notifications_enabled:
+          type: boolean
       required:
       - email
       - first_name
