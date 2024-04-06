@@ -1,11 +1,14 @@
+import io
 import random
 import typing
 from abc import ABC
 from unittest import SkipTest
 
 from authentication.models import User
+from django.core.files.storage import default_storage
 from django.db.models import TextChoices
 from django.urls import reverse
+from PIL import Image
 from rest_framework.test import APIClient, APITestCase
 from rest_framework_simplejwt.settings import api_settings
 from rest_framework_simplejwt.tokens import AccessToken
@@ -271,3 +274,27 @@ class CRUDTestCase(BaseTestCase):
         test_instance.refresh_from_db()
         for field, value in result.items():
             self.assertEqual(str(resp.data.get(field)), str(value))
+
+
+class APITestImageUpload(BaseAPITest):
+    def setUp(self):
+        self.create_and_login()
+        self.url = reverse("image-upload")
+        image = Image.new("RGB", (500, 500))
+        with io.BytesIO() as output:
+            image.save(output, format="jpeg")
+            output.seek(0)
+            self.file = output.getvalue()
+
+    def test_send_image_binary(self):
+        resp = self.client.post(self.url, content_type="image/jpeg", data=self.file)
+        with default_storage.open(resp.data["name"]) as f:
+            f.read()
+        default_storage.delete(resp.data["name"])
+        self.assertEqual(resp.status_code, 201)
+        self.assertIsNotNone(resp.data["name"])
+        self.assertIsNotNone(resp.data["url"])
+
+    def test_send_wrong_data(self):
+        resp = self.client.post(self.url, content_type="image/jpeg", data=b"fsdewrw")
+        self.assertEqual(resp.status_code, 400)

@@ -2,9 +2,12 @@ from django.contrib import admin
 from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
+from core.views import ImageUploadView
+
 api_urlpatterns = [
     path("auth/", include("authentication.urls")),
     path("", include("events.urls")),
+    path("image-upload/", ImageUploadView.as_view(), name="image-upload"),
 ]
 urlpatterns = [
     path("admin/", admin.site.urls),

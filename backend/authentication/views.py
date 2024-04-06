@@ -1,13 +1,14 @@
 from django.conf import settings
-from django.utils.decorators import method_decorator
+from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import AnonymousUser
 from django.utils.http import urlsafe_base64_decode
-from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import OpenApiResponse, extend_schema, extend_schema_view
-from rest_framework import permissions
+from rest_framework import mixins, permissions
 from rest_framework.exceptions import force_str
 from rest_framework.generics import CreateAPIView, GenericAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.viewsets import GenericViewSet
 from rest_framework_simplejwt.serializers import (
     TokenRefreshSerializer,
     TokenVerifySerializer,
@@ -58,12 +59,14 @@ class SignUpView(CreateAPIView):
     serializer_class = SignUpSerializer
 
 
-class ProfileView(GenericAPIView):
-    permission_classes = (IsAuthenticated,)
+class ProfileViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, GenericViewSet):
     serializer_class = UserSerializer
+    permission_classes = (IsAuthenticated,)
+    queryset = User.objects.all()
+    pagination_class = None
 
-    def get(self, request, *args, **kwargs):
-        return Response(UserSerializer(request.user).data)
+    def get_object(self) -> AbstractBaseUser | AnonymousUser:
+        return self.request.user
 
 
 @extend_schema_view(post=extend_schema(responses=OpenApiResponse(JWTAuthResponseSerializer)))
@@ -90,7 +93,6 @@ class SocialLoginsView(GenericAPIView):
     permission_classes = (AllowAny,)
     serializer_class = SocialLoginSerializer
 
-    @method_decorator(cache_page(60 * 60 * 24 * 365))
     def get(self, request) -> Response:
         li = LinkedinOpenIdConnect(redirect_uri=f"{settings.SITE_URL}/social/linkedin-openidconnect/")
         google = GoogleOAuth2(redirect_uri=f"{settings.SITE_URL}/social/google-oauth2/")

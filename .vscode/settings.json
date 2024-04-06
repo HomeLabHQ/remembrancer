@@ -12,29 +12,15 @@
   "eslint.workingDirectories": ["./frontend"],
   "python.defaultInterpreterPath": "${workspaceFolder}/backend/.venv/bin/python",
   "python.analysis.indexing": true,
-  "python.analysis.extraPaths": ["${workspaceFolder}/backend/"],
+  "python.analysis.extraPaths": ["${workspaceFolder}/backend"],
   "python.autoComplete.extraPaths": ["${workspaceFolder}/backend/.venv/", "${workspaceFolder}/backend"],
-  "python.analysis.include": ["${workspaceFolder}/backend"],
+  "python.analysis.include": ["${workspaceFolder}/backend/"],
   "python.analysis.addImport.exactMatchOnly": true,
   "python.analysis.autoImportCompletions": true,
   "python.analysis.packageIndexDepths": [
     {
-      "name": "django",
-      "depth": 5
-    },
-    {
-      "name": "rest_framework",
-      "depth": 20,
-      "includeAllSymbols": true
-    },
-    {
-      "name": "factory_boy",
-      "depth": 20,
-      "includeAllSymbols": true
-    },
-    {
-      "name": "rest_social_auth",
-      "depth": 20,
+      "name": "",
+      "depth": 10,
       "includeAllSymbols": true
     }
   ],

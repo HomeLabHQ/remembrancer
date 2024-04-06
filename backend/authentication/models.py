@@ -46,6 +46,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
     email = models.EmailField(verbose_name=_("email address"), max_length=255, unique=True)
+    is_notifications_enabled = models.BooleanField(default=False)
+    avatar = models.ImageField(upload_to="users", null=True, blank=True, max_length=255)
     is_staff = models.BooleanField(
         default=False,
         help_text=_("Designates whether this user can access this admin site."),

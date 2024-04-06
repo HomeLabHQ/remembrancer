@@ -3,9 +3,10 @@ import { useAppSelector } from '@/redux/hooks';
 import { LoginPage } from '@/pages/Login.page';
 import SignupConfirmPage from '@/pages/SignupConfirm.page';
 import SocialLoginPage from '@/pages/SocialLogin.page';
-import LandingPage from './pages/Landing.page';
-import { HomePage } from './pages/Home.page';
-import EventPage from './pages/Event.page';
+import LandingPage from '@/pages/Landing.page';
+import { HomePage } from '@/pages/Home.page';
+import EventPage from '@/pages/Event.page';
+import ProfilePage from '@/pages/Profile.page';
 
 type ProtectedRouteProps = {
   children: React.ReactNode;
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <LandingPage />,
+  },
+  {
+    path: '/profile',
+    element: <ProfilePage />,
   },
   {
     path: '/dashboard',

@@ -1,4 +1,4 @@
-from authentication.serializers import UserSerializer
+from authentication.serializers import BaseUserSerializer
 from django.db import transaction
 from rest_framework import serializers
 
@@ -7,7 +7,7 @@ from events.models import Event
 
 class BaseEventSerializer(serializers.ModelSerializer):
     date = serializers.DateField()
-    author = UserSerializer(read_only=True)
+    author = BaseUserSerializer(read_only=True)
 
     class Meta:
         model = Event
