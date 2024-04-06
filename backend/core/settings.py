@@ -162,8 +162,8 @@ MEDIA_URL = "/attachments/"
 DEFAULT_FILE_STORAGE = "core.storages.MediaStorage"
 STATICFILES_STORAGE = "core.storages.StaticStorage"
 AWS_S3_ENDPOINT_URL = os.environ.get("AWS_S3_ENDPOINT_URL")
-AWS_ACCESS_KEY_ID = os.environ.get("POSTGRES_USER")
-AWS_SECRET_ACCESS_KEY = os.environ.get("POSTGRES_PASSWORD")
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
 AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
 
 CELERY_BROKER_URL = os.environ.get("REDIS_URL", "redis://redis:6379")
