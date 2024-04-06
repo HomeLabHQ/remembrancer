@@ -22,6 +22,7 @@ import {
   IconSun,
   IconMoonStars,
 } from '@tabler/icons-react';
+import { useNavigate } from 'react-router-dom';
 import classes from './Header.module.css';
 import { useAuthProfileRetrieveQuery } from '@/redux/api';
 import { useAppDispatch } from '@/redux/hooks';
@@ -33,6 +34,7 @@ export function Header() {
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const dark = colorScheme === 'dark';
   const sunIcon = (
     <IconSun
@@ -90,6 +92,7 @@ export function Header() {
             </ActionIcon>
             <Menu.Dropdown>
               <Menu.Item
+                onClick={() => navigate('/profile')}
                 leftSection={
                   <IconSettings style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                 }
