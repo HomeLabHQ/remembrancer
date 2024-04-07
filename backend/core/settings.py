@@ -161,6 +161,8 @@ MEDIA_URL = "/attachments/"
 
 DEFAULT_FILE_STORAGE = "core.storages.MediaStorage"
 STATICFILES_STORAGE = "core.storages.StaticStorage"
+AWS_DEFAULT_ACL = "public-read"
+AWS_QUERYSTRING_AUTH = False
 AWS_S3_ENDPOINT_URL = os.environ.get("AWS_S3_ENDPOINT_URL")
 AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
