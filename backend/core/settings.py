@@ -157,16 +157,8 @@ IMAGE_DEFAULT_EXTENSION = "jpeg"
 IMAGE_MAX_SIZE = 5 * 1024 * 1024
 STATIC_URL = "/static/"
 MEDIA_URL = "/attachments/"
-
-
-DEFAULT_FILE_STORAGE = "core.storages.MediaStorage"
-STATICFILES_STORAGE = "core.storages.StaticStorage"
-AWS_DEFAULT_ACL = "public-read"
-AWS_QUERYSTRING_AUTH = False
-AWS_S3_ENDPOINT_URL = os.environ.get("AWS_S3_ENDPOINT_URL")
-AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
-AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
+STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, "static"))
+MEDIA_ROOT = os.path.abspath(os.path.join(BASE_DIR, "attachments"))
 
 CELERY_BROKER_URL = os.environ.get("REDIS_URL", "redis://redis:6379")
 CELERY_RESULT_BACKEND = CELERY_BROKER_URL
