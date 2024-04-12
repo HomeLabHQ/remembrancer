@@ -34,7 +34,9 @@ services:
     depends_on:
       - api
   redis:
-    image: redis:latest
+    image: 'ghcr.io/microsoft/garnet'
+    ulimits:
+      memlock: -1
     volumes:
       - redis_data:/data
 volumes:
