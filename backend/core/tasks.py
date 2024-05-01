@@ -10,9 +10,8 @@ logger = logging.getLogger("celery")
 
 
 @shared_task(bind=True, max_retries=3)
-def send_email(self, subject: str, template: str, recipients: list, context: dict, reply_to=None):
-    """
-    Sending emails
+def send_email(self, subject: str, template: str, recipients: list, context: dict, reply_to=None):  # noqa: PLR0913
+    """Sending emails
     :param self: task object
     :param subject: message title
     :param context: message data in dict format
@@ -31,8 +30,8 @@ def send_email(self, subject: str, template: str, recipients: list, context: dic
             html_message=html_message,
         )
     except Exception as error:
-        logger.error(f"Connection error occurred while sending of email. Code: {error} - Message: {error}")
+        logger.exception(f"Connection error occurred while sending of email. Code: {error} - Message: {error}")
         try:
             self.retry(countdown=60)
         except MaxRetriesExceededError as e:
-            logger.error(str(e))
+            logger.exception(str(e))

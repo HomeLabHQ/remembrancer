@@ -1,8 +1,8 @@
-from core.mixins import ListSerializerMixin
 from django.db.models import Q
 from rest_framework import mixins, viewsets
 from rest_framework.permissions import IsAuthenticated
 
+from core.mixins import ListSerializerMixin
 from events.models import Event
 from events.serializers import BaseEventSerializer, EventSerializer
 
@@ -23,5 +23,4 @@ class EventsViewSet(
     def get_queryset(self):
         if self.request.user.is_anonymous:
             return Event.objects.filter(is_public=True)
-        else:
-            return Event.objects.filter(Q(author_id=self.request.user.id) | Q(is_public=True))
+        return Event.objects.filter(Q(author_id=self.request.user.id) | Q(is_public=True))

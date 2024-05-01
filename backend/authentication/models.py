@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, first_name, last_name, password: typing.Optional[str] = None):
+    def create_user(self, email, first_name, last_name, password: str | None = None):
         """Creates and saves a User with the given email, date of
         birth and password.
         """
@@ -78,8 +78,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         return f"{self.id}, {self.email}"
 
     def has_perm(self, perm, obj=None):
-        """
-        Return True if the user has the specified permission. Query all
+        """Return True if the user has the specified permission. Query all
         available auth backends, but return immediately if any backend returns
         True. Thus, a user who has permission from a single auth backend is
         assumed to have permission in general. If an object is provided, check

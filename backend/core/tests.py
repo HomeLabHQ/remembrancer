@@ -4,7 +4,6 @@ import typing
 from abc import ABC
 from unittest import SkipTest
 
-from authentication.models import User
 from django.core.files.storage import default_storage
 from django.db.models import TextChoices
 from django.urls import reverse
@@ -12,6 +11,8 @@ from PIL import Image
 from rest_framework.test import APIClient, APITestCase
 from rest_framework_simplejwt.settings import api_settings
 from rest_framework_simplejwt.tokens import AccessToken
+
+from authentication.models import User
 
 
 class Colors(TextChoices):
@@ -54,7 +55,7 @@ class BaseAPITest(APITestCase):
 
 class CustomClient(APIClient):
     def request(self, **request):
-        print(f"{Colors.BOLD}{Colors.WARNING} {request.get('REQUEST_METHOD')}:{Colors.END} {request.get('PATH_INFO')}")
+        print(f"{Colors.BOLD}{Colors.WARNING} {request.get('REQUEST_METHOD')}:{Colors.END} {request.get('PATH_INFO')}")  # noqa: T201
         return super().request(**request)
 
 
@@ -66,7 +67,7 @@ class BaseTestCase(ABC):
     def _callTestMethod(self, method):
         class_name = self.__class__.__name__
         method_name = method.__name__
-        print(
+        print(  # noqa: T201
             f"{Colors.BOLD}{Colors.BLUE} {class_name}{Colors.END} -> {Colors.GREEN}{method_name}{Colors.END}",
         )
         super()._callTestMethod(method)
@@ -265,6 +266,7 @@ class CRUDTestCase(BaseTestCase):
         Checks payload data via serializer and compares with response
 
         Args:
+        ----
             serializer (serializer): Serializer from view
             test_instance (model): Model instance
             resp (response): response

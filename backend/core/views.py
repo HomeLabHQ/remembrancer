@@ -11,8 +11,7 @@ from core.utils import preprocess_image
 
 
 class ImageUploadView(APIView):
-    """
-    Upload image to server
+    """Upload image to server
 
     Upload image into S3 bucket, returning its `name` and `url`.
     You need to specify `Content-Type` header to `image/*` value, i. e. `image/jpeg`.
