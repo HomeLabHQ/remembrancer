@@ -27,7 +27,7 @@ django-storages = "^1.14.2"
 ruff = "^0.3.3"
 
 [tool.poetry.group.test.dependencies]
-coverage = {extras = ["toml"], version = "^7.2.7"}
+coverage = {extras = ["toml"], version = "^7.5.0"}
 factory_boy = "^3.3.0"
 
 [tool.poetry.group.docs.dependencies]
