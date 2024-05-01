@@ -31,7 +31,7 @@ coverage = {extras = ["toml"], version = "^7.2.7"}
 factory_boy = "^3.3.0"
 
 [tool.poetry.group.docs.dependencies]
-mkdocs = "^1.5.3"
+mkdocs = "^1.6.0"
 mkdocs-awesome-pages-plugin = "^2.9.2"
 mkdocs-graphviz = "^1.5.3"
 mkdocs-material = "^9.5.6"
