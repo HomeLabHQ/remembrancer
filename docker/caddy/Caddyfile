@@ -1,0 +1,16 @@
+{$SITE_DOMAIN}/api/* {
+    reverse_proxy /api/* api:8000
+}
+{$SITE_DOMAIN}/admin/* {
+   reverse_proxy /admin/* api:8000
+}
+{$SITE_DOMAIN} {
+    root * /usr/share/web
+    file_server
+    try_files {path} /index.html
+}
+{$SITE_DOMAIN}/static/* {
+    root * /static
+    file_server
+}
+
