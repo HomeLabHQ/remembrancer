@@ -13,4 +13,8 @@
     root * /static
     file_server
 }
+{$SITE_DOMAIN}/attachments/* {
+    root * /attachments
+    file_server
+}
 

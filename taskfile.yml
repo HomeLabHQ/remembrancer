@@ -2,7 +2,6 @@ version: "3"
 tasks:
   deploy:
       cmds:
-        - infisical export  -e production >.env
         - git pull
         - docker compose -f compose.slim.yml  build
         - docker compose -f compose.slim.yml  up -d
@@ -60,7 +59,6 @@ tasks:
       - mv docs/database/database.dot docs/database/database.md
       - sed -i '' '1s/^/```dot\n/' docs/database/database.md && echo '```' >> docs/database/database.md
       - "sed -i '' '/^ *.. Created: .*/d' docs/database/database.md"
-
     silent: true
   lint:
     cmds:
