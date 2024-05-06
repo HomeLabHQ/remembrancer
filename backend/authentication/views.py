@@ -49,8 +49,7 @@ class RefreshJSONWebToken(TokenRefreshView):
 
 @extend_schema_view(post=extend_schema(responses=OpenApiResponse(JWTAuthResponseSerializer)))
 class SignUpView(CreateAPIView):
-    """
-    Register new user in the system
+    """Register new user in the system
 
     You need to provide `email`, `first_name`, `last_name`, `password`
     """

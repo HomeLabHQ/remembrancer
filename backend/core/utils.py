@@ -1,5 +1,4 @@
 import logging
-import typing
 import uuid
 from io import BytesIO
 
@@ -34,7 +33,7 @@ def filename_generator() -> str:
 # region Files/Images
 
 
-def upload_to(instance, filename) -> str:
+def upload_to(_, filename) -> str:
     """Use this function in models ``upload_to`` arguments.
 
     This will rename image with ``filename_generator`` when image is uploaded.
@@ -60,7 +59,7 @@ def bytes_from_image(image, img_format="jpeg"):
     with BytesIO() as output:
         image.save(output, format=img_format)
         contents = output.getvalue()
-    return contents
+    return contents  # noqa: RET504
 
 
 def bytes_to_mb(b: float) -> float:
@@ -83,7 +82,7 @@ def preprocess_image(file):
     im_size = file.size
     if im_size > settings.IMAGE_MAX_SIZE:
         raise ValidationError(
-            f"File is too large. Image size should not exceed {bytes_to_mb(settings.IMAGE_SIZE_LIMIT)} MB."
+            f"File is too large. Image size should not exceed {bytes_to_mb(settings.IMAGE_SIZE_LIMIT)} MB.",
         )
     im = resize_image(file)
     return bytes_from_image(im, settings.IMAGE_DEFAULT_EXTENSION)
@@ -97,7 +96,7 @@ def save_related(
     base: dict,
     queryset: QuerySet,
     validated_data: dict,
-    related_serializer_class: typing.Type[serializers.Serializer],
+    related_serializer_class: type[serializers.Serializer],
     context: dict | None = None,
 ):
     """Save related serializer based on base serializer data

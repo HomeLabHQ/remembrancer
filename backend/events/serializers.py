@@ -1,7 +1,7 @@
-from authentication.serializers import BaseUserSerializer
 from django.db import transaction
 from rest_framework import serializers
 
+from authentication.serializers import BaseUserSerializer
 from events.models import Event
 
 

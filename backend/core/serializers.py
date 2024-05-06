@@ -23,9 +23,7 @@ class ModelFileSerializer(serializers.ModelSerializer):
             # Here we check not for is None but just
             # for ``not check_for_none`` allowing Python + that Django
             # ImageFieldFile to resolve the condition
-            if isinstance(attribute, FieldFile) and not check_for_none:
-                ret[field.field_name] = None
-            elif check_for_none is None:
+            if isinstance(attribute, FieldFile) and not check_for_none or check_for_none is None:
                 ret[field.field_name] = None
             else:
                 ret[field.field_name] = field.to_representation(attribute)

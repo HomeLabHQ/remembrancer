@@ -1,6 +1,7 @@
-from core.models import TimeStampedModel, TitleDescriptionModel
 from django.db import models
 from django.utils import timezone
+
+from core.models import TimeStampedModel, TitleDescriptionModel
 
 
 class Event(TitleDescriptionModel, TimeStampedModel):

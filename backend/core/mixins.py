@@ -16,14 +16,12 @@ class ListSerializerMixin:
         assert self.list_serializer_class, "Use must set 'list_serializer_class' in order to use ListSerializerMixin"
         if self.action == "list":
             return self.list_serializer_class
-        else:
-            return super().get_serializer_class()
+        return super().get_serializer_class()
 
     def get_queryset(self):
         if self.action == "list" and self.list_queryset is not None:
             return self.list_queryset
-        else:
-            return super().get_queryset()
+        return super().get_queryset()
 
 
 class ChoiceSerializer(serializers.Serializer):
@@ -42,7 +40,7 @@ class ChoiceMixin:
     @action(detail=False, methods=["GET"], pagination_class=None)
     def choices(self, request, *args, **kwargs):
         """Use this mixin if you have some choices that need to be send to frontend
-        this action will import dynamic all choices user send
+        this action will import dynamic all choices user send.
         """
         data = [{"field": v[0], "values": [item.name for item in v[1]]} for v in self.all_choices.items()]
         return Response(data=data, status=200)
@@ -51,14 +49,14 @@ class ChoiceMixin:
 class RepresentationPKField(serializers.PrimaryKeyRelatedField):
     """RepresentationPKField
     Use this field to reference object by PK in (update/create)
-    but represent them with specific serializer
+    but represent them with specific serializer.
     """
 
-    def __init__(self, representation=None, **kwargs):
+    def __init__(self, representation=None, **kwargs) -> None:
         self.representation = representation
         super().__init__(**kwargs)
 
-    def use_pk_only_optimization(self):
+    def use_pk_only_optimization(self) -> bool:
         return False
 
     def to_representation(self, value):
