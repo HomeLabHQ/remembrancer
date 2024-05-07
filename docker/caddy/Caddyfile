@@ -1,20 +1,30 @@
-{$SITE_DOMAIN}/api/* {
-    reverse_proxy /api/* api:8000
+(cloudflare) {
+	encode gzip
+	tls {
+		dns cloudflare {$CLOUDFLARE_API_TOKEN}
+	}
 }
-{$SITE_DOMAIN}/admin/* {
-   reverse_proxy /admin/* api:8000
+{$SITE_URL}/api/* {
+	import cloudflare
+	reverse_proxy /api/* api:8000
 }
-{$SITE_DOMAIN} {
-    root * /usr/share/web
-    file_server
-    try_files {path} /index.html
+{$SITE_URL}/admin/* {
+	import cloudflare
+	reverse_proxy /admin/* api:8000
 }
-{$SITE_DOMAIN}/static/* {
-    root * /static
-    file_server
+{$SITE_URL} {
+	import cloudflare
+	root * /usr/share/web
+	file_server
+	try_files {path} /index.html
 }
-{$SITE_DOMAIN}/attachments/* {
-    root * /attachments
-    file_server
+{$SITE_URL}/static/* {
+	import cloudflare
+	root * /static
+	file_server
 }
-
+{$SITE_URL}/attachments/* {
+	import cloudflare
+	root * /attachments
+	file_server
+}
