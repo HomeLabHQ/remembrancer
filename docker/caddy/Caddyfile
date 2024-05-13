@@ -1,5 +1,4 @@
 {$SITE_URL} {
-	debug
 	@api path /api/* /admin/*
 	handle @api {
 		reverse_proxy api:8000
