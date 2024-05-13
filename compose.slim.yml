@@ -1,4 +1,3 @@
-version: "3.8"
 x-service: &service
   build:
     dockerfile: ./docker/backend/Dockerfile
@@ -13,6 +12,8 @@ services:
     command:
       - prod
     image: remembrancer/backend-${ENVIRONMENT}
+    volumes:
+      - attachments:/code/attachments/
   celery:
     <<: *service
     depends_on:
