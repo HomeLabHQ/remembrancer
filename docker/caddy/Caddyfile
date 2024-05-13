@@ -1,20 +1,18 @@
 {$SITE_URL} {
-	handle /api/* {
+	@api path /api/* /admin/*
+	handle @api {
 		reverse_proxy api:8000
-	}
-	handle /admin/* {
-		reverse_proxy /admin/* api:8000
 	}
 	handle {
 		root * /usr/share/web
 		file_server
 		try_files {path} /index.html
 	}
-	handle /static/* {
+	handle_path /static/* {
 		root * /static
 		file_server
 	}
-	handle /attachments/* {
+	handle_path /attachments/* {
 		root * /attachments
 		file_server
 	}
