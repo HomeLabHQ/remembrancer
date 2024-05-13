@@ -93,8 +93,11 @@ class SocialLoginsView(GenericAPIView):
     serializer_class = SocialLoginSerializer
 
     def get(self, request) -> Response:
-        li = LinkedinOpenIdConnect(redirect_uri=f"{settings.SITE_URL}/social/linkedin-openidconnect/")
-        google = GoogleOAuth2(redirect_uri=f"{settings.SITE_URL}/social/google-oauth2/")
+        base_url = settings.SITE_URL
+        if "localhost" not in settings.SITE_URL:
+            base_url = settings.SITE_URL.replace("http://", "https://")
+        li = LinkedinOpenIdConnect(redirect_uri=f"{base_url}/social/linkedin-openidconnect/")
+        google = GoogleOAuth2(redirect_uri=f"{base_url}/social/google-oauth2/")
         data = {"linkedin_openidconnect": li.auth_url(), "google_oauth2": google.auth_url()}
         return Response(data)
 
