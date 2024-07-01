@@ -27,7 +27,7 @@ uvicorn = {extras = ["standard"], version = "^0.29.0"}
 ruff = "^0.4.1"
 
 [tool.poetry.group.test.dependencies]
-coverage = {extras = ["toml"], version = "^7.2.7"}
+coverage = {extras = ["toml"], version = "^7.5.4"}
 factory_boy = "^3.3.0"
 
 [tool.poetry.group.docs.dependencies]
